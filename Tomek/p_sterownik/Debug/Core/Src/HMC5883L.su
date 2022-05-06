@@ -1,0 +1,2 @@
+../Core/Src/HMC5883L.c:13:6:HMC5883L_Init	16	static
+../Core/Src/HMC5883L.c:33:10:HMC5883L_GetAngle	72	static
