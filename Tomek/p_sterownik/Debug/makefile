@@ -60,8 +60,8 @@ all: main-build
 main-build: p_sterownik.elf secondary-outputs
 
 # Tool invocations
-p_sterownik.elf p_sterownik.map: $(OBJS) $(USER_OBJS) C:\Users\tombr\Desktop\p_sterownik\STM32F411RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "p_sterownik.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\tombr\Desktop\p_sterownik\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p_sterownik.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+p_sterownik.elf p_sterownik.map: $(OBJS) $(USER_OBJS) C:\Users\tombr\Desktop\W04\6.\ semestr\projekt_zespolowy\projekt_zespolowy\Tomek\p_sterownik\STM32F411RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "p_sterownik.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\tombr\Desktop\W04\6. semestr\projekt_zespolowy\projekt_zespolowy\Tomek\p_sterownik\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p_sterownik.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

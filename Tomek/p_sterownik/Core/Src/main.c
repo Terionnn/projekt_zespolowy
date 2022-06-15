@@ -64,7 +64,7 @@ DMA_HandleTypeDef hdma_usart2_tx;
 /* USER CODE BEGIN PV */
 volatile const float c=5.2*3.14; // Licznik impulsow
 volatile const float k=(5.2*3.14)/3840;
-volatile uint16_t AD_RES = 0, Vamb, DC_Multiplier;
+volatile uint16_t AD_RES = 0, Vamb, DC_Multiplier,al;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -271,7 +271,7 @@ void north()
 
 void magnetic_direction()
 {
-    magnetometer_measure();
+   // magnetometer_measure();
     if(direction - azymuth >= 180.00)
         turn_left();
     else
@@ -338,7 +338,7 @@ void move_forward_1()
 
 
 void move_(float x){
-
+	TIM2->CNT=0;
 	  move_forward_1();
 
 
@@ -350,10 +350,11 @@ void move_(float x){
 
 	}
 
-	if(TIM2->CNT*k>=x)
+	if(TIM2->CNT*k>=x){
+		al=TIM2->CNT;
 		stop();
-
-}
+	//HAL_TIM_Encoder_Stop(&htim2, TIM_CHANNEL_ALL);
+}}
 
 
 
@@ -366,12 +367,12 @@ void lights(){
 	    	       // Read The ADC Conversion Result & Map It To PWM DutyCycle
 	    	        AD_RES = HAL_ADC_GetValue(&hadc1);
 
-	if(AD_RES<310)
+	if(AD_RES<510)
 	   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
 
 
 
-	if(AD_RES>310)
+	if(AD_RES>510)
 	   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
 
@@ -383,6 +384,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	}
 }
 
+
+void rotate_180(){
+	   magnetometer_measure();
+	if(azymuth >= 180)
+	azymuth=180.00+azymuth;
+	else
+		azymuth=180.00-azymuth;
+
+
+	magnetic_direction();
+}
 
 
 /* USER CODE END 0 */
@@ -443,13 +455,29 @@ int main(void)
     DC_Multiplier = 65535/(4096-Vamb);
 
     HAL_TIM_Base_Start_IT(&htim10);
-  //  HAL_Delay(5000);
-  //  magnetometer_init();
-  //  calibrate();
- //  HAL_Delay(1000);
+    change_speed(370);
+  // HAL_Delay(5000);
+     magnetometer_init();
+     calibrate();
+     HAL_Delay(3000);
+     north();
+     HAL_Delay(3000);
+    move_(100);
+    HAL_Delay(3000);
+    turn_right_time(4000);
+     HAL_Delay(3000);
+    move_(50);
+     HAL_Delay(3000);
+     turn_left_time(4000);
+     HAL_Delay(3000);
+     move_(100);
+
+    //HAL_Delay(5000);
+    //move_(20);
 
 
-     move_(88);
+
+
 
 
     while(1){
